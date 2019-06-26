@@ -13,10 +13,13 @@ Vue.use(VueRouter);
 
 //1.导入组件
 import Login from './pages/Login.vue';
+import Admin from './pages/Admin.vue';
 
 //2.3 路由的配置
 const routes = [
-  {path:"/login",component:Login }
+  {path:"/",redirect:"/admin"},//重定向
+  {path:"/login",component:Login},//登录页
+  {path:"/admin",component:Admin},//首页
 ]
 //2.4创建路由对象
 const router=new VueRouter({routes})

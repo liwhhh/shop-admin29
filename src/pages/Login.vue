@@ -64,7 +64,7 @@
         //判断是否登录成功
         if(status== 0){
           // 跳转到首页
-          this.$router.push("/");
+          this.$router.push("/admin");
         }else{
            this.$message({//提示错误
             message: message,
