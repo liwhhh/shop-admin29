@@ -1,13 +1,6 @@
 <template>
   <div id="app">
-
-    <el-button type="primary" disabled>主要按钮</el-button>
-   
-     <el-alert
-    title="错误提示的文案"
-    type="error"
-    effect="dark">
-  </el-alert>
+<router-view ></router-view>
   </div>
 </template>
 
@@ -17,15 +10,15 @@
 
 export default {
   name: 'app',
-  
+  // 生命周期用axios请求的
   mounted(){
     //axios会返回promise对象,对象下面then这个方法  https://api.github.com/users
   this.$axios({
       url:"https://api.github.com/users",
       method:"GET",
-      params:{},
+      params:{},//get请求参数   data:{}//post请求参数
     }).then(res => {
-     alert(res)
+     
     })
   }
 
