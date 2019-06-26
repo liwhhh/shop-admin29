@@ -1,33 +1,93 @@
 <template>
-<el-form :model="form" label-width="80px">
-  <el-form-item label="账号">
-    <el-input v-model="form.username"></el-input>
-  </el-form-item>
-  <el-form-item label="密码">
-    <el-input v-model="form.password" type="password"></el-input>
-  </el-form-item>
+<el-row type="flex" justify="center" class="container">
+  <!-- model表示整个表单的数据绑定到data哪个属性 -->
+  <!-- 1.rules 表单认证规则 -->
+  <el-form :model="form" :rules="rules" ref="form" label-width="80px" class="form">
+    <div class="title">登录</div>
+    <!-- 2.prop 指定规则查找 -->
+    <el-form-item label="账号" prop="uname">
+      <el-input v-model="form.uname"></el-input>
+    </el-form-item>
+    <el-form-item label="密码" prop="upwd" >
+      <el-input v-model="form.upwd" type="password"></el-input>
+    </el-form-item>
 
-  <el-form-item>
-    <el-button type="primary" @click="onSubmit">提交</el-button>
-    <el-button>取消</el-button>
-  </el-form-item>
-</el-form>
+    <el-form-item>
+      <el-button type="primary" @click="onSubmit">提交</el-button>
+      <el-button>取消</el-button>
+    </el-form-item>
+  </el-form>
+</el-row>
 </template>
 <script>
   export default {
     data() {
       return {
         form: {
-          username:"",
-          password:""
+         uname:"admin",
+         upwd:"123456"
+        },
+        //表单验证规则
+        rules:{
+          //多条规则,不同的状态下触发
+            // required 是否必填
+            // message 报错提示文字
+            // trigger 什么时候触发  blur失去焦点
+          uname:[
+            { required: true, message: '请输入账号', trigger: 'blur' },
+          ],
+          upwd:[
+           { required: true, message: '请输入密码', trigger: 'blur' },
+          ]
         }
       }
     },
     methods: {
+
+      //登录提交
       onSubmit() {
-        // this.axios
-        console.log('submit!');
-      }
+           // 找到表单元素,调用表单的验证
+     this.$refs.form.validate(valid => {
+      //  当验证不通过的时候,直接返回
+        if(!valid) return;
+        //获取参数
+        // 发起请求
+        this.$axios({
+          url:"http://localhost:8899/admin/account/login",
+          method:"POST",
+          data:this.form,
+          //处理跨域请求的参数
+          withCredentials:true,
+        }).then(res => {
+          //解构出来
+          const {status,message}=res.data;
+        //判断是否登录成功
+        if(status== 0){
+          // 跳转到首页
+          this.$router.push("/");
+        }else{
+           this.$message({//提示错误
+            message: message,
+            type: 'success'
+            });
+         }
+        })//axios
+
+     })//refs
+
+
+      }//onSubmit提交
     }
   }
 </script>
+<style scoped lang="less">
+.title{
+  text-align: center;
+  margin-bottom:20px;
+}
+.form{
+  width: 350px;
+  margin-top: 10%;
+}
+
+</style>
