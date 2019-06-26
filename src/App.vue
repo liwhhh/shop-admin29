@@ -1,6 +1,13 @@
 <template>
   <div id="app">
-   index
+
+    <el-button type="primary" disabled>主要按钮</el-button>
+   
+     <el-alert
+    title="错误提示的文案"
+    type="error"
+    effect="dark">
+  </el-alert>
   </div>
 </template>
 
