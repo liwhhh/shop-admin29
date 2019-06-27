@@ -1,7 +1,7 @@
 <template>
  <div class="page-container">
     <el-container>
-      <el-aside width="200px">
+      <el-aside width="auto">
         <!-- 侧边栏组件 -->
           <Aside></Aside>
       </el-aside>
