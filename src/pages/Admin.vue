@@ -1,7 +1,10 @@
 <template>
  <div class="page-container">
     <el-container>
-      <el-aside width="200px">Aside</el-aside>
+      <el-aside width="200px">
+        <!-- 侧边栏组件 -->
+          <Aside></Aside>
+      </el-aside>
       <el-container>
         <el-header>Header</el-header>
         <el-main>Main</el-main>
@@ -11,8 +14,12 @@
 </template>
 
 <script>
+// 导入组件
+import Aside from '../components/Aside.vue';
 export default {
-
+    components:{
+      Aside
+    }
 }
 </script>
 
@@ -26,9 +33,7 @@ export default {
   
   .el-aside {
     background-color: #D3DCE6;
-    color: #333;
-    text-align: center;
-    line-height: 200px;
+    
   }
   
   .el-main {
