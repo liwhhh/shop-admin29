@@ -3,10 +3,16 @@
     <el-container>
       <el-aside width="auto">
         <!-- 侧边栏组件 -->
-          <Aside></Aside>
+          <Aside/>
+
       </el-aside>
       <el-container>
-        <el-header>Header</el-header>
+
+        <el-header>
+          <!-- 头部组件 -->
+          <Header/>
+
+        </el-header>
         <el-main>Main</el-main>
       </el-container>
     </el-container>
@@ -16,16 +22,18 @@
 <script>
 // 导入组件
 import Aside from '../components/Aside.vue';
+import Header from '../components/Header.vue';
 export default {
     components:{
-      Aside
+      Aside,
+      Header
     }
 }
 </script>
 
 <style>
-  .el-header, .el-footer {
-    background-color: #B3C0D1;
+  .el-header{
+    background-color: #fff;
     color: #333;
     text-align: center;
     line-height: 60px;
