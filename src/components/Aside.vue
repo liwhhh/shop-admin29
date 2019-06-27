@@ -1,14 +1,14 @@
 <template>
 <!-- default-active	当前激活菜单的 index
       open	展开指定的 sub-menu  
-      :collapse="isCollapse" 菜单展开收缩默认false展开  -->
+      :collapse="collapse" 菜单展开收缩默认false展开  -->
     <el-menu
       default-active="1-1"
       class="el-menu-vertical-demo"
       background-color="#001529"
       text-color="#fff"
       active-text-color="#ffd04b"
-      :collapse="false">
+      :collapse="collapse" >
        <!-- 加一个唯一的key   动态生成的所以有 :  -->
       <el-submenu v-for="(item,index) in menus" :key="index" :index="`${index+1}`">
        <!-- 自定义模块 -->
@@ -56,12 +56,25 @@
        ]
      }
     },
+    //在单文件组件中可以用对象来声明 声明可以接收的属性
+    props:{
+       collapse:{
+        //  属性的类型
+         type:Boolean,
+        //  设置默认值
+         value:false
+       }
+    },
     methods: {
     
     }
   }
 </script>
 <style>
+  .el-menu-vertical-demo:not(.el-menu--collapse) {
+    width: 200px;
+    min-height: 400px;
+  }
   .el-menu{
      border-right: none;
     }

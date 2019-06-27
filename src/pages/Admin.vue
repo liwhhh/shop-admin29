@@ -3,14 +3,14 @@
     <el-container>
       <el-aside width="auto">
         <!-- 侧边栏组件 -->
-          <Aside/>
+          <Aside :collapse="isCollapse"/>
 
       </el-aside>
       <el-container>
 
         <el-header>
           <!-- 头部组件 -->
-          <Header/>
+          <Header @updataCollapse="updataCollapse"/>
 
         </el-header>
         <el-main>Main</el-main>
@@ -24,10 +24,24 @@
 import Aside from '../components/Aside.vue';
 import Header from '../components/Header.vue';
 export default {
+   data(){
+      return {
+        // 侧边栏展开
+         isCollapse:false
+      }
+   },
+    //  方法
+    methods:{
+      // 修改左侧栏的展开收缩 function
+       updataCollapse(){
+         this.isCollapse=!this.isCollapse;
+       }
+    },
+   //  组成部分
     components:{
       Aside,
-      Header
-    }
+      Header, 
+    } 
 }
 </script>
 
