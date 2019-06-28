@@ -4,7 +4,7 @@
      <el-row type="flex" justify="space-between" align="middle">
       <el-col>
          <el-button>新增</el-button>
-         <el-button>删除</el-button>
+         <el-button @click="handleMoreDelete">删除</el-button>
       </el-col>
         <div  style="margin-top: 15px;">
           <el-input placeholder="请输入内容"  class="input-with-select">
@@ -16,7 +16,8 @@
    <!-- data:data,name,address是一个数组,表格的数据 -->
      <el-table
     :data="tableData"
-    style="width: 100%">
+    style="width: 100%"
+       @selection-change="handleSelectionChange">
 
     <!-- 允许多选 -->
      <el-table-column
@@ -65,7 +66,8 @@
 export default {
       data() {
       return {
-        tableData: []
+        tableData: [],
+        ids:[]
       }
     },
     // 方法
@@ -82,13 +84,12 @@ export default {
       handleEdit(index, row) {
         console.log(index, row);
       },
-
+      // 单个删除
       handleDelete(row) {
         //获取到id
        const id=row.id;
       //  询问是否删除
-         this.$confirm('是否删除')
-          .then(_ => {
+         this.$confirm('是否删除').then(() => {
             // 确定按钮触发
              //  调用删除接口
               this.$axios({
@@ -105,9 +106,41 @@ export default {
               })//axios
           })//confirm
           .catch(_ => {});
+      },//handleDelete 单个删除
+        // 👇多选择时候触发
+       handleSelectionChange(val) {
+         var ids=val.map(v=>{
+           return v.id
+         });
+        //  提供给删除多个时候的接口数据
+        this.ids=ids;
+      },
+      // 删除多个
+      handleMoreDelete(){
+
+        const id=this.ids.join(",");
+          //  询问是否删除
+         this.$confirm('是否删除').then(() => {
+            // 确定按钮触发
+             //  调用删除接口
+              this.$axios({
+                url:`/admin/goods/del/${id}`,
+                  //处理跨域请求的参数
+                  withCredentials:true
+              }).then(res=>{
+                const {status,message}=res.data;
+                this.$message({
+                  type:"success",
+                  message
+                });
+                this.getList();//重新刷新数据
+              })//axios
+          })//confirm
       }
 
     },//methods
+
+
     // 加载完之后请求数据
     mounted(){
       this.getList()
