@@ -19,11 +19,11 @@ import GoodsList from './pages/GoodsList.vue';
 //2.3 路由的配置
 const routes = [
   { path: "/", redirect: "/admin" },//重定向
-  { path: "/login", component: Login },//登录页
+  { path: "/login", component: Login, meta: "登录" },//登录页
   //首页
   {
-    path: "/admin", component: Admin, children: [
-      { path: "goods-list", component: GoodsList }
+    path: "/admin", component: Admin, meta: "管理后台", children: [
+      { path: "goods-list", component: GoodsList, meta: "商品列表", }
     ]
   },
 ]
