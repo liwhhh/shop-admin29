@@ -63,19 +63,22 @@
           const {status,message}=res.data;
         //判断是否登录成功
         if(status== 0){
+          
+          // 把用户的信息保存到本地
+          localStorage.setItem("username",message.uname)
+          localStorage.setItem("realname",message.realname)
+
+
           // 跳转到首页
           this.$router.push("/admin");
         }else{
            this.$message({//提示错误
             message: message,
-            type: 'success'
+            type: 'error'
             });
          }
         })//axios
-
      })//refs
-
-
       }//onSubmit提交
     }
   }
