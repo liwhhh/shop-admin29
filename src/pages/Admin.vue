@@ -13,7 +13,10 @@
           <Header @updataCollapse="updataCollapse"/>
 
         </el-header>
-        <el-main>Main</el-main>
+        <el-main>
+          <!-- 展示子页面 -->
+          <router-view></router-view>
+        </el-main>
       </el-container>
     </el-container>
  </div>
@@ -57,14 +60,10 @@ export default {
     background-color: #D3DCE6;
     
   }
-  
-  .el-main {
-    background-color: #E9EEF3;
-    color: #333;
-    text-align: center;
-    line-height: 160px;
+  .el-main{
+    background-color:#E9EEF3;
   }
-  
+  /* 首页布局的高度需要修改为100% */
   .page-container > .el-container {
     position: absolute;
     width: 100%;

@@ -27,7 +27,7 @@ export default {
       // 用户退出
       handleLogout(){
         this.$axios({
-          url:"http://localhost:8899/admin/account/logout"
+          url:"/admin/account/logout"
         }).then(res=>{
           const {status} =res.data;
 

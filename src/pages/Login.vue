@@ -43,7 +43,6 @@
       }
     },
     methods: {
-
       //登录提交
       onSubmit() {
            // 找到表单元素,调用表单的验证
@@ -53,7 +52,7 @@
         //获取参数
         // 发起请求
         this.$axios({
-          url:"http://localhost:8899/admin/account/login",
+          url:"/admin/account/login",
           method:"POST",
           data:this.form,
           //处理跨域请求的参数
@@ -63,11 +62,9 @@
           const {status,message}=res.data;
         //判断是否登录成功
         if(status== 0){
-          
           // 把用户的信息保存到本地
           localStorage.setItem("username",message.uname)
           localStorage.setItem("realname",message.realname)
-
 
           // 跳转到首页
           this.$router.push("/admin");

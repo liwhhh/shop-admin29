@@ -14,15 +14,21 @@ Vue.use(VueRouter);
 //1.导入组件
 import Login from './pages/Login.vue';
 import Admin from './pages/Admin.vue';
+import GoodsList from './pages/GoodsList.vue';
 
 //2.3 路由的配置
 const routes = [
-  {path:"/",redirect:"/admin"},//重定向
-  {path:"/login",component:Login},//登录页
-  {path:"/admin",component:Admin},//首页
+  { path: "/", redirect: "/admin" },//重定向
+  { path: "/login", component: Login },//登录页
+  //首页
+  {
+    path: "/admin", component: Admin, children: [
+      { path: "goods-list", component: GoodsList }
+    ]
+  },
 ]
 //2.4创建路由对象
-const router = new VueRouter({routes})
+const router = new VueRouter({ routes })
 
 // 拦截路由的请求,先判断用户是否是登录
 // beforeEach中的函数在每个页面组件加载之前执行
@@ -31,28 +37,31 @@ const router = new VueRouter({routes})
 router.beforeEach((to, from, next) => {
 
   if (to.path === "/login") {//如果是登录页
-      // 实现如果访问的是登录页并且是登录的状态,就跳转到首页
-      return next();
+    // 实现如果访问的是登录页并且是登录的状态,就跳转到首页
+    return next();
   }
-  
-    // 没有登录
-    if (!localStorage.getItem("username")) {
-      // 跳转到登录页
-      next("/login");
-    } else {
-      next();
-    }
+
+  // 没有登录
+  if (!localStorage.getItem("username")) {
+    // 跳转到登录页
+    next("/login");
+  } else {
+    next();
+  }
 
 })
 
 // 是否是生成环境
 Vue.config.productionTip = false
 //1.2把axios绑定到vue实例的属性$axios
-Vue.prototype.$axios=axios;
+Vue.prototype.$axios = axios;
+
+axios.defaults.baseURL = 'http://localhost:8899';
+
 new Vue({
   //2.5 挂载路由
   router,
   render: h => h(App),
-  
+
   // $mount作用相当于el,根实例挂载到节点
 }).$mount('#app')
