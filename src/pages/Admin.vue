@@ -12,9 +12,11 @@
         </el-header>
         <el-main>
           <!-- 面包屑组件 -->
-          <div>
-            {{routerInfo.join(" -> ")}}
-          </div>
+          <el-breadcrumb separator="->">
+          <el-breadcrumb-item v-for="(item,index) in routerInfo" :key="index">
+            {{item}}
+          </el-breadcrumb-item>
+        </el-breadcrumb>
 
           <!-- 展示子页面 -->
           <router-view></router-view>
