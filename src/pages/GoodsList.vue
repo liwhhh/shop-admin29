@@ -34,13 +34,7 @@
            </el-row>
         </template>
     </el-table-column> 
-    <!-- <el-table-column
-      label="姓名"
-      width="180">
-      <template slot-scope="scope">
-       <span>{{scope.row.name}}</span>
-      </template>
-    </el-table-column> -->
+
     <el-table-column
       prop="categoryname"
       label="类型"
@@ -61,7 +55,7 @@
         <el-button
           size="mini"
           type="danger"
-          @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+          @click="handleDelete(scope.row)">删除</el-button>
       </template>
     </el-table-column>
   </el-table>
@@ -74,23 +68,49 @@ export default {
         tableData: []
       }
     },
+    // 方法
     methods: {
+      getList(){
+          // 请求商品的列表数据
+          this.$axios({
+            url:"/admin/goods/getlist?pageIndex=1&pageSize=7&searchvalue=",
+          }).then(res=>{
+          const {message}=res.data;
+          this.tableData=message;
+          })
+      },
       handleEdit(index, row) {
         console.log(index, row);
       },
-      handleDelete(index, row) {
-        console.log(index, row);
+
+      handleDelete(row) {
+        //获取到id
+       const id=row.id;
+      //  询问是否删除
+         this.$confirm('是否删除')
+          .then(_ => {
+            // 确定按钮触发
+             //  调用删除接口
+              this.$axios({
+                url:`/admin/goods/del/${id}`,
+                  //处理跨域请求的参数
+                  withCredentials:true
+              }).then(res=>{
+                const {status,message}=res.data;
+                this.$message({
+                  type:"success",
+                  message
+                });
+                this.getList();//重新刷新数据
+              })//axios
+          })//confirm
+          .catch(_ => {});
       }
-    },
+
+    },//methods
     // 加载完之后请求数据
     mounted(){
-      // 请求商品的列表数据
-      this.$axios({
-        url:"/admin/goods/getlist?pageIndex=1&pageSize=4&searchvalue=",
-      }).then(res=>{
-       const {message}=res.data;
-       this.tableData=message;
-      })
+      this.getList()
     }
 }
 </script>
