@@ -22,7 +22,28 @@ const routes = [
   {path:"/admin",component:Admin},//首页
 ]
 //2.4创建路由对象
-const router=new VueRouter({routes})
+const router = new VueRouter({routes})
+
+// 拦截路由的请求,先判断用户是否是登录
+// beforeEach中的函数在每个页面组件加载之前执行
+// to:要去的页面的路由对象  from:来自哪个页面的路由对象
+// next:是否下一步,next如果不执行页面不会加载
+router.beforeEach((to, from, next) => {
+
+  if (to.path === "/login") {//如果是登录页
+      // 实现如果访问的是登录页并且是登录的状态,就跳转到首页
+      return next();
+  }
+  
+    // 没有登录
+    if (!localStorage.getItem("username")) {
+      // 跳转到登录页
+      next("/login");
+    } else {
+      next();
+    }
+
+})
 
 // 是否是生成环境
 Vue.config.productionTip = false
