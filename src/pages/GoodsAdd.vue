@@ -1,9 +1,13 @@
 <template>
   <el-form ref="form" :model="form" label-width="80px" style="margin-top:20px;">
-
     <el-form-item label="所属类别">
       <el-select v-model="form.category_id" placeholder="请选择活动区域">
-        <el-option :label="item.title" :value="item.category_id" v-for="(item,index) in catagorys" :key="index"></el-option>
+        <el-option
+          :label="item.title"
+          :value="item.category_id"
+          v-for="(item,index) in catagorys"
+          :key="index"
+        ></el-option>
       </el-select>
     </el-form-item>
 
@@ -27,14 +31,17 @@
     </el-form-item>
 
     <!-- 封面图片 ,这个组件不支持v-model 因为不是表单组件 
-     需要组件的事件里面赋值,赋给form.imgList -->
+    需要组件的事件里面赋值,赋给form.imgList-->
     <el-form-item label="封面图片">
+      <!-- action:上传图片的地址 show-file-list:是否展示文件列表 -->
+      <!-- before-upload:上传之前的判断 -->
       <el-upload
         class="avatar-uploader"
-        action="https://jsonplaceholder.typicode.com/posts/"
+        action="http://localhost:8899/admin/article/uploadimg"
         :show-file-list="false"
         :on-success="handleAvatarSuccess"
-        :before-upload="beforeAvatarUpload" >
+        :before-upload="beforeAvatarUpload">
+        <!-- 预览图片 -->
         <img v-if="imageUrl" :src="imageUrl" class="avatar">
         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
       </el-upload>
@@ -54,37 +61,23 @@
     </el-form-item>
 
     <!-- 图片墙 多张图片 ,这个组件不支持v-model 因为不是表单组件 
-     需要组件的事件里面赋值,赋给form.fileList --> 
+    需要组件的事件里面赋值,赋给form.fileList-->
     <el-form-item label="图片相册">
       <div>
-        <el-upload action="#" list-type="picture-card" :auto-upload="false">
-          <i slot="default" class="el-icon-plus"></i>
-          <div slot="file" slot-scope="{file}">
-            <img class="el-upload-list__item-thumbnail" :src="file.url" alt>
-            <span class="el-upload-list__item-actions">
-              <span class="el-upload-list__item-preview" @click="handlePictureCardPreview(file)">
-                <i class="el-icon-zoom-in"></i>
-              </span>
-              <span
-                v-if="!disabled"
-                class="el-upload-list__item-delete"
-                @click="handleDownload(file)"
-              >
-                <i class="el-icon-download"></i>
-              </span>
-              <span
-                v-if="!disabled"
-                class="el-upload-list__item-delete"
-                @click="handleRemove(file)"
-              >
-                <i class="el-icon-delete"></i>
-              </span>
-            </span>
-          </div>
-        </el-upload>
-        <el-dialog :visible.sync="dialogVisible">
-          <img width="100%" :src="dialogImageUrl" alt>
-        </el-dialog>
+        <!-- list-type:声明为 文件列表类型  -->
+        <!-- on-preview:预览图片 -->
+        <!-- handleRemove:删除图片 -->
+         <el-upload
+            action="http://localhost:8899/admin/article/uploadimg"
+            list-type="picture-card"
+            :on-preview="handlePictureCardPreview"
+            :on-remove="handleRemove"
+            :on-success="handlePicSuccess">
+            <i class="el-icon-plus"></i>
+          </el-upload>
+          <el-dialog :visible.sync="dialogVisible">
+            <img width="100%" :src="dialogImageUrl" alt="">
+          </el-dialog>
       </div>
     </el-form-item>
 
@@ -102,23 +95,23 @@
     data() {
       return {
         form: {
-         category_id:"",
-         status:false,
-         is_top:false,
-         is_hot:false,
-         title:"",
-         sub_title:"",
-         imgList:[],
-         goods_no:"",
-         stock_quantity:"",
-         market_price:"",
-         sell_price:"",
-         fileList:[],
-         zhaiyao:"",
-         content:"",
-         is_silde:false,//表单中没有,只需要给一个默认值
+          category_id: "",
+          status: false,
+          is_top: false,
+          is_hot: false,
+          title: "",
+          sub_title: "",
+          imgList: [],
+          goods_no: "",
+          stock_quantity: "",
+          market_price: "",
+          sell_price: "",
+          fileList: [],
+          zhaiyao: "",
+          content: "",
+          is_silde: false //表单中没有,只需要给一个默认值
         },
-        catagorys:[],
+        catagorys: [],
         // 封面图片
         imageUrl: "",
         // 图片相册
@@ -128,46 +121,55 @@
       };
     },
     // 页面加载完就执行
-    mounted(){
+    mounted() {
       this.$axios({
-          url:"/admin/category/getlist/goods",
+        url: "/admin/category/getlist/goods"
       }).then(res => {
         // message是分类数据
-        const {message}=res.data;
-        this.catagorys=message;
-      })
+        const { message } = res.data;
+        this.catagorys = message;
+      });
     },
     // 方法
     methods: {
       onSubmit() {
-        console.log(this.form);
+        console.log(this.form); //一堆数据
       },
+      // 图片上传成功之后的回调
       handleAvatarSuccess(res, file) {
-        this.imageUrl = URL.createObjectURL(file.raw);
+        //封面图片
+        this.imageUrl = URL.createObjectURL(file.raw); // 图片预览
+        // console.log(res,file)
+        this.form.imgList = [res];
       },
       beforeAvatarUpload(file) {
-        const isJPG = file.type === "image/jpeg";
+        //封面图片 上传之前判断
+        // const isJPG = file.type === "image/jpeg";
         const isLt2M = file.size / 1024 / 1024 < 2;
-
-        if (!isJPG) {
-          this.$message.error("上传头像图片只能是 JPG 格式!");
-        }
         if (!isLt2M) {
           this.$message.error("上传头像图片大小不能超过 2MB!");
         }
-        return isJPG && isLt2M;
+        return isLt2M;
       },
-      //  图片相册
-      handleRemove(file) {
-        console.log(file);
+      //图片相册 删除 file已被删除的 
+      // fileList:保留的图片,response属性中
+      handleRemove(file, fileList) {
+        // console.log(file, fileList);
+        this.form.fileList= fileList.map(v => {
+             return v.response;
+        })
+      },
+      handlePicSuccess(res,file,fileList){ //图片相册上传成功
+      //  console.log(res,file,fileList)
+      // 只要fileList每一条数据的response
+      this.form.fileList=fileList.map(v => {
+         return v.response;
+      })
       },
       handlePictureCardPreview(file) {
         this.dialogImageUrl = file.url;
         this.dialogVisible = true;
       },
-      handleDownload(file) {
-        // console.log(file);
-      }
     }
   };
 </script>
@@ -195,5 +197,4 @@
     height: 178px;
     display: block;
   }
- 
 </style>
