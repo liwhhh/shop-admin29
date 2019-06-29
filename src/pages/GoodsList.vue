@@ -3,7 +3,7 @@
      <!-- 列表顶部 -->
      <el-row type="flex" justify="space-between" align="middle">
       <el-col>
-         <el-button>新增</el-button>
+         <el-button @click="$router.push(`/admin/goods-add`)">新增</el-button>
          <el-button @click="handleMoreDelete">删除</el-button>
       </el-col>
         <div  style="margin: 15px;">
