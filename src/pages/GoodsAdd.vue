@@ -81,9 +81,14 @@
       </div>
     </el-form-item>
 
+
     <el-form-item label="内容摘要">
       <el-input type="textarea" v-model="form.zhaiyao"></el-input>
     </el-form-item>
+
+  <el-form-item label="内容描述">
+     <quillEditor v-model="form.content"></quillEditor>
+     </el-form-item>
     <el-form-item>
       <el-button type="primary" @click="onSubmit">立即创建</el-button>
       <el-button>取消</el-button>
@@ -91,6 +96,12 @@
   </el-form>
 </template>
 <script>
+// 导入富文本编辑器的样式
+import 'quill/dist/quill.core.css'
+import 'quill/dist/quill.snow.css'
+import 'quill/dist/quill.bubble.css'
+import { quillEditor } from 'vue-quill-editor';//导入组件
+// const {quillEditor}=abc;
   export default {
     data() {
       return {
@@ -119,6 +130,10 @@
         dialogVisible: false,
         disabled: false
       };
+    },
+    // 注册组件
+    components:{
+      quillEditor
     },
     // 页面加载完就执行
     mounted() {
