@@ -73,8 +73,8 @@
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
       :current-page="currentPage4"
-      :page-sizes="[100, 200, 300, 400]"
-      :page-size="100"
+      :page-sizes="[2, 4, 8, 16]"
+      :page-size="pageSize"
       layout="total, sizes, prev, pager, next, jumper"
       :total="400">
     </el-pagination>
@@ -89,6 +89,10 @@ export default {
         tableData: [],
         ids:[],
         currentPage4: 4,
+
+        pageSize:4,//条数
+        pageIndex:"",
+        searchvalue:"",
       }
     },
     // 方法 
@@ -96,7 +100,8 @@ export default {
       // 分页
       // 修改条数的数据,val是条数
        handleSizeChange(val) {
-        console.log(`每页 ${val} 条`);
+          this.pageSize=val;
+          this.getList();
       },
       // 当前页的事件,val当前页的参数
       handleCurrentChange(val) {
@@ -106,7 +111,7 @@ export default {
       getList(){
           // 请求商品的列表数据
           this.$axios({
-            url:"/admin/goods/getlist?pageIndex=1&pageSize=7&searchvalue=",
+            url:`/admin/goods/getlist?pageIndex=1&pageSize=${this.pageSize}&searchvalue=`,
           }).then(res=>{
           const {message}=res.data;
           this.tableData=message;
