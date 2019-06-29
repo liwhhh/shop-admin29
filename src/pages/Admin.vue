@@ -13,7 +13,7 @@
         <el-main>
           <!-- 面包屑组件 -->
           <el-breadcrumb separator="->">
-          <el-breadcrumb-item v-for="(item,index) in routerInfo" :key="index">
+          <el-breadcrumb-item  v-for="(item,index) in routerInfo" :key="index">
             {{item}}
           </el-breadcrumb-item>
         </el-breadcrumb>

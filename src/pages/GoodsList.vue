@@ -123,9 +123,9 @@ export default {
 
           })
       },
-      handleEdit(index, row) {
-        console.log(index, row);
-      },
+      // handleEdit(index, row) {
+      //   // console.log(index, row);
+      // },
       // 单个删除
       handleDelete(row) {
         //获取到id
@@ -147,7 +147,7 @@ export default {
                 this.getList();//重新刷新数据
               })//axios
           })//confirm
-          .catch(_ => {});
+          .catch(() => {});
       },//handleDelete 单个删除
         // 👇多选择时候触发
        handleSelectionChange(val) {
