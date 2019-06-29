@@ -6,7 +6,7 @@
          <el-button>新增</el-button>
          <el-button @click="handleMoreDelete">删除</el-button>
       </el-col>
-        <div  style="margin-top: 15px;">
+        <div  style="margin: 15px;">
           <el-input placeholder="请输入内容"  class="input-with-select">
             <el-button slot="append" icon="el-icon-search"></el-button>
           </el-input>
@@ -60,6 +60,26 @@
       </template>
     </el-table-column>
   </el-table>
+   
+   <!-- 分页 -->
+   <!-- size-change:修改条数触发 -->
+   <!-- current-change:切换到当前页的事件 -->
+   <!-- current-page:默认当前页面 -->
+   <!-- page-sizes:条数选择的下拉数据 -->
+   <!-- page-size:默认条数 
+   total:总的 sizes:条数 prev:上一页 pager:当前页 
+   next:下一页 jumper:跳转 layout:布局-->
+     <el-pagination
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page="currentPage4"
+      :page-sizes="[100, 200, 300, 400]"
+      :page-size="100"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="400">
+    </el-pagination>
+
+
    </div>
 </template>
 <script>
@@ -67,11 +87,22 @@ export default {
       data() {
       return {
         tableData: [],
-        ids:[]
+        ids:[],
+        currentPage4: 4,
       }
     },
-    // 方法
+    // 方法 
     methods: {
+      // 分页
+      // 修改条数的数据,val是条数
+       handleSizeChange(val) {
+        console.log(`每页 ${val} 条`);
+      },
+      // 当前页的事件,val当前页的参数
+      handleCurrentChange(val) {
+        console.log(`当前页: ${val}`);
+      },
+
       getList(){
           // 请求商品的列表数据
           this.$axios({
