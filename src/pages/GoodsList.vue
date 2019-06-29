@@ -7,8 +7,9 @@
          <el-button @click="handleMoreDelete">删除</el-button>
       </el-col>
         <div  style="margin: 15px;">
-          <el-input placeholder="请输入内容"  class="input-with-select">
-            <el-button slot="append" icon="el-icon-search"></el-button>
+          <el-input placeholder="请输入内容"  class="input-with-select"
+          v-model="searchValue">
+            <el-button slot="append" icon="el-icon-search" @click="handleSearch"></el-button>
           </el-input>
         </div>
      </el-row>
@@ -60,15 +61,12 @@
       </template>
     </el-table-column>
   </el-table>
-   
    <!-- 分页 -->
    <!-- size-change:修改条数触发 -->
-   <!-- current-change:切换到当前页的事件 -->
-   <!-- current-page:默认当前页面 -->
-   <!-- page-sizes:条数选择的下拉数据 -->
-   <!-- page-size:默认条数 
-   total:总的 sizes:条数 prev:上一页 pager:当前页 
-   next:下一页 jumper:跳转 layout:布局-->
+   <!-- current-change:切换到当前页的事件 current-page:默认当前页面 -->
+   <!-- page-sizes:条数选择的下拉数据 page-size:默认条数 -->
+   <!-- total:总的 sizes:条数 prev:上一页 pager:当前页 
+      next:下一页 jumper:跳转 layout:布局-->
      <el-pagination
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
@@ -85,15 +83,13 @@
 <script>
 export default {
       data() {
-      return {
+      return {  //声明
         tableData: [],
         ids:[],
-        
-
         pageSize:4,//条数
         pageIndex:1,//当前页  声明一下
         totalCount:0,//总条数 给0 越小越好
-        searchvalue:"",
+        searchValue:"",//前面搜索框的*输入框*
       }
     },
     // 方法 
@@ -109,11 +105,14 @@ export default {
         this.pageIndex=val;
         this.getList();
       },
-
+      // 点击搜索按钮的时候触发
+      handleSearch(){
+         this.getList();
+      },
       getList(){
           // 请求商品的列表数据
           this.$axios({
-            url:`/admin/goods/getlist?pageIndex=${this.pageIndex}&pageSize=${this.pageSize}&searchvalue=`,
+            url:`/admin/goods/getlist?pageIndex=${this.pageIndex}&pageSize=${this.pageSize}&searchvalue=${this.searchValue}`,
           }).then(res=>{
           const {message,totalcount}=res.data;
           this.tableData=message;
