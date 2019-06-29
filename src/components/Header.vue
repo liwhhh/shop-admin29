@@ -3,7 +3,7 @@
   <el-row type="flex" justify="space-between" align="middle">
      <i class="el-icon-back" @click="handleClick"></i>
      <div class="user-info">
-       {{username}} {{realname}} 
+       {{uname}} {{realname}} 
        <span @click="handleLogout">退出</span>
      </div>
   </el-row>
@@ -13,7 +13,7 @@
 export default {
   data(){
     return{
-      username:"",
+      uname:"",
       realname:""
     }
   },
@@ -38,7 +38,7 @@ export default {
              this.$router.replace("/login");
 
             // 清除本地的数据 
-            localStorage.removeItem("username");
+            localStorage.removeItem("uname");
             localStorage.removeItem("realname");
           }//if
         })
@@ -47,7 +47,7 @@ export default {
     // 组件加载完成之后拿
     mounted(){
       // 从本地获取到用户的信息
-        this.username=localStorage.getItem("username")
+        this.uname=localStorage.getItem("uname")
         this.realname=localStorage.getItem("realname")
     }
 }
