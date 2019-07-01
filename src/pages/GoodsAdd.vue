@@ -154,7 +154,7 @@ import { quillEditor } from 'vue-quill-editor';//导入组件
     // 方法
     methods: {
       onSubmit() {
-        console.log(this.form)
+        // console.log(this.form)
         this.$axios({
           url:"/admin/goods/add/goods",
           method:"POST",

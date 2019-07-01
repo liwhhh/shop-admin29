@@ -153,25 +153,35 @@ import { quillEditor } from 'vue-quill-editor';//导入组件
       // 根据动态路由参数获取id
       // console.log(this.$route)  解构id
        const {id}=this.$route.params;
+
       // 根据id获取当前这个商品的数据
       this.$axios({
         url:`/admin/goods/getgoodsmodel/${id}`,
       }).then(res =>{
-        // 初始化form的值
         const {message}=res.data;
-        this.form=message;
         // 修改封面图片的预览图片
         this.imageUrl=message.imgList[0].url;
-     
+       
+       const arr=message.fileList.map( v=> {
+          return {
+            ...v,
+            url:"http://localhost:8899"+v.shorturl
+          }
+       })
+        // 初始化form的值
+        this.form={
+          ...message,
+          fileList:arr
+        }
       })
     },
 
     // 方法
     methods: {
       onSubmit() {
-        console.log(this.form)
+        // console.log(this.form)
         this.$axios({
-          url:"/admin/goods/add/goods",
+          url:`/admin/goods/edit/${this.$route.params.id}`,
           method:"POST",
           data:this.form,
           //处理跨域请求的参数
@@ -208,19 +218,18 @@ import { quillEditor } from 'vue-quill-editor';//导入组件
         return isLt2M;
       },
       //图片相册 删除 file已被删除的 
-      // fileList:保留的图片,response属性中
+      // fileList:保留的图片,response属性中有列表数据
       handleRemove(file, fileList) {
         // console.log(file, fileList);
-        this.form.fileList= fileList.map(v => {
-             return v.response
-        })
+        this.form.fileList=fileList;
       },
-      handePicSuccess(res,file,fileList){ //图片相册上传成功
-      //  console.log(res,file,fileList)
-      // 只要fileList每一条数据的response
-      this.form.fileList=fileList.map(v => {
-           return v.response
-      })
+
+      //图片相册上传成功
+      handePicSuccess(res,file){ 
+        // console.log(res,file)
+        this.form.fileList.push(res) //最新的push进去
+        // console.log(this.form.fileList)
+      
       },
       handlePictureCardPreview(file) {
         this.dialogImageUrl = file.url;
