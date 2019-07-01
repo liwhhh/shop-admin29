@@ -76,8 +76,6 @@
       layout="total, sizes, prev, pager, next, jumper"
       :total="totalCount">
     </el-pagination>
-
-
    </div>
 </template>
 <script>
@@ -123,9 +121,10 @@ export default {
 
           })
       },
-      // handleEdit(index, row) {
-      //   // console.log(index, row);
-      // },
+      //编辑按钮 index:索引    row:当前行的对象
+      handleEdit(index, row) { //编辑页面
+        this.$router.push(`/admin/goods-edit/${row.id}`)
+      },
       // 单个删除
       handleDelete(row) {
         //获取到id
@@ -159,7 +158,6 @@ export default {
       },
       // 删除多个
       handleMoreDelete(){
-
         const id=this.ids.join(",");
           //  询问是否删除
          this.$confirm('是否删除').then(() => {

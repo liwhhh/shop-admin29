@@ -16,6 +16,7 @@ import Login from './pages/Login.vue';
 import Admin from './pages/Admin.vue';
 import GoodsList from './pages/GoodsList.vue';
 import GoodsAdd from './pages/GoodsAdd.vue';
+import GoodsEdit from './pages/GoodsEdit.vue';
 
 //2.3 路由的配置
 const routes = [
@@ -25,7 +26,8 @@ const routes = [
   {
     path: "/admin", component: Admin, meta: "管理后台", children: [
       { path: "goods-list", component: GoodsList, meta: "商品列表", },
-      { path: "goods-add", component: GoodsAdd, meta: "新增商品", }
+      { path: "goods-add", component: GoodsAdd, meta: "新增商品", },
+      { path: "goods-edit/:id", component: GoodsEdit, meta: "编辑商品", }
     ]
   },
 ]
