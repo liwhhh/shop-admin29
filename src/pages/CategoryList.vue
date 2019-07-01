@@ -71,7 +71,46 @@
         url:"/admin/category/getlist/goods"
       }).then(res => {
         const {message}=res.data;
-        this.data=message;
+        // this.data=message;
+        // 使用递归的方式实现---------------
+        let arr=[];
+        // 递归函数,循环判断是否有子选项
+        function loop(arr,item){
+          // 循环当前数组
+          arr.forEach(v =>{
+            // 当子选项的parent_id和arr中某个栏目的category_id相等的话
+            // 就认为是他的子选项
+               if(v.category_id == item.parent_id){
+                 if(!v.children){//是否有children
+                   v.children=[];
+                 }
+                 v.children.push(item);
+                //  {
+                //    ...item,
+                //    id:item.category_id,
+                //    label:item.title
+                //  }
+                 return;
+               }
+               if(v.children){//如果有children
+                   loop(v.children,item);
+               }
+          })
+        }
+
+        message.forEach(v => {
+          // 是否是顶级
+          if(v.parent_id === 0){
+            // 如果是顶级栏目,直接把栏目添加到arr第一层
+            arr.push(v)
+          }else{
+            // 如果不是顶级,交给递归函数去判断是哪一个栏目的子选项
+            loop(arr,v);
+          }
+        })
+        this.data=arr;
+       
+        
       })
     }
   };
