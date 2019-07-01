@@ -18,10 +18,10 @@
       <!-- data表示每一行的数据 -->
       <!-- node是每一行的节点,也可以访问到每一行数据 -->
       <span class="custom-tree-node" slot-scope="{ node, data }">
-        <span>{{ node.label }}</span>
-
+        <span>{{ data.title }}</span>
+   
          <span>
-           <input size="mini" class="input"/>
+           <input size="mini" class="input" :value="data.sort_id"/>
          </span>
         
           <el-button
@@ -40,53 +40,39 @@
 
   export default {
     data() {
-      const data = [{
-        id: 1,
-        label: '一级 1',
-        children: [{
-          id: 4,
-          label: '二级 1-1',
-          children: [{
-            id: 9,
-            label: '三级 1-1-1'
-          }, {
-            id: 10,
-            label: '三级 1-1-2'
-          }]
-        }]
-      }];
+      // const data = [{
+      //   id: 1,
+      //   label: '一级 1',
+      //   children: [{
+      //     id: 4,
+      //     label: '二级 1-1',
+      //     children: [{
+      //       id: 9,
+      //       label: '三级 1-1-1'
+      //     }, {
+      //       id: 10,
+      //       label: '三级 1-1-2'
+      //     }]
+      //   }]
+      // }];
       return {
-        data: JSON.parse(JSON.stringify(data)),
-        data: JSON.parse(JSON.stringify(data))
+        data:[]
       }
     },
-
+ // 方法
     methods: {
-      append(data) {
-        const newChild = { id: id++, label: 'testtest', children: [] };
-        if (!data.children) {
-          this.$set(data, 'children', []);
-        }
-        data.children.push(newChild);
-      },
-
-      remove(node, data) {
-        const parent = node.parent;
-        const children = parent.data.children || parent.data;
-        const index = children.findIndex(d => d.id === data.id);
-        children.splice(index, 1);
-      },
-
-      renderContent(h, { node, data, store }) {
-        return (
-          <span class="custom-tree-node">
-            <span>{node.label}</span>
-            <span>
-              <el-button size="mini" type="text" on-click={ () => this.append(data) }>Append</el-button>
-              <el-button size="mini" type="text" on-click={ () => this.remove(node, data) }>Delete</el-button>
-            </span>
-          </span>);
-      }
+     
+    },
+    // 页面加载完之后
+    mounted(){
+      // 获取分类数据
+      // 请求分类数据
+      this.$axios({
+        url:"/admin/category/getlist/goods"
+      }).then(res => {
+        const {message}=res.data;
+        this.data=message;
+      })
     }
   };
 </script>
