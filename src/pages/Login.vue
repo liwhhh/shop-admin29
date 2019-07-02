@@ -60,12 +60,20 @@
         }).then(res => {
           //解构出来
           const {status,message}=res.data;
-          console.log(res.data.message)
+          // console.log(res.data.message)
         //判断是否登录成功
         if(status== 0){
           // 把用户的信息保存到本地
-          localStorage.setItem("uname",message.uname)
+          localStorage.setItem("username",message.uname)
           localStorage.setItem("realname",message.realname)
+
+          // 保存到vuex的store
+          // 调用store栏目的mutations的方法
+          // 调用setUser时候第二个参数用来传参数
+          this.$store.commit("setUser",{
+            username:message.uname,
+            realname:message.realname
+            });
 
           // 跳转到首页
           this.$router.push("/admin");

@@ -3,20 +3,35 @@
   <el-row type="flex" justify="space-between" align="middle">
      <i class="el-icon-back" @click="handleClick"></i>
      <div class="user-info">
-       {{uname}} {{realname}} 
+       {{user.username}} {{user.realname}} 
        <span @click="handleLogout">退出</span>
      </div>
   </el-row>
 </template>
 
 <script>
+// mapState是一个对象,这个对象是一个函数,用于computed
+import {mapState} from "vuex";
+
 export default {
   data(){
     return{
-      uname:"",
-      realname:""
+      // username:"",
+      // realname:""
     }
   },
+  // 计算属性
+   computed:{
+    //  mapState是固定写法
+     ...mapState({
+      //  key的user是给模板渲染用
+      // 值user是不能改,来自于store
+       user:"user"
+
+     })
+
+   },
+
     methods:{
       //触发传递过来的左侧展开收缩事件
       handleClick(){
@@ -47,8 +62,8 @@ export default {
     // 组件加载完成之后拿
     mounted(){
       // 从本地获取到用户的信息
-        this.uname=localStorage.getItem("uname")
-        this.realname=localStorage.getItem("realname")
+        // this.uname=localStorage.getItem("uname")
+        // this.realname=localStorage.getItem("realname")
     }
 }
 </script>

@@ -1,11 +1,14 @@
 import Vuex from "vuex";
+import Vue from "vue";
+
+Vue.use(Vuex);//注册插件
 
 const store = new Vuex.Store({
   // 保存的数据,相当于组件中的data
   state: {
     user: {
-      username: "",
-      realname:""
+      username: localStorage.getItem("username") || "",
+      realname: localStorage.getItem("realname") || "",
     }
   },
   //修改state的值,属性的是函数
@@ -18,5 +21,9 @@ const store = new Vuex.Store({
     setUser(state, user) {
       state.user = user;
     }
-  }
+  },
+  // 处理异步数据,用法跟mutation是一样的
+  // actions:{},
 })
+
+export default store;
