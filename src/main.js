@@ -20,7 +20,7 @@ import GoodsEdit from './pages/GoodsEdit.vue';
 import CategoryList from './pages/CategoryList.vue';
 
 // 最后 导入vuexd store
-import store from './store/index.js';
+import store from './store';
 //2.3 路由的配置
 const routes = [
   { path: "/", redirect: "/admin" },//重定向
