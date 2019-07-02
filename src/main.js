@@ -19,6 +19,8 @@ import GoodsAdd from './pages/GoodsAdd.vue';
 import GoodsEdit from './pages/GoodsEdit.vue';
 import CategoryList from './pages/CategoryList.vue';
 
+// 最后 导入vuexd store
+import store from './store/index.js';
 //2.3 路由的配置
 const routes = [
   { path: "/", redirect: "/admin" },//重定向
@@ -65,6 +67,8 @@ Vue.prototype.$axios = axios;
 axios.defaults.baseURL = 'http://localhost:8899';
 
 new Vue({
+  // 把store绑定到根实例
+  store,
   //2.5 挂载路由
   router,
   render: h => h(App),
